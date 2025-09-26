@@ -1,0 +1,33 @@
+'''
+here is a code to perform bruteforce on an encrypted zip file whose password has been forgotten but we have stored it somewhere(in my case here).
+So rather checking it manually why not to use some code for the decryption.
+'''
+
+from zipfile import ZipFile
+
+# extract the zip file with a given password
+ def attempt_extract(zf_handle, password):
+     try:	
+     	zf_handle.extractall(pwd = password)
+     	return True
+     except:
+	return False
+	    
+
+def main():
+    print("[+] Beginning bruteforce ")
+    with ZipFile('enc.zip') as zf:
+        with open('pass.txt', 'rb') as f:
+            for p in f:
+		password = p.strip()
+		if attempt_extract(zf,password):
+			print("[+] Correct password : %s" %password)
+			exit(0)
+		else:
+			print("[-] Incorrect password : %s" %password)
+
+
+    print("[+] Password not found in list")
+
+if __name__ == "__main__":
+    main()
